@@ -2,7 +2,7 @@
 # File: main.yml - Main tasks for Nomad
 
 - name: Include checks/asserts
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: asserts.yml
 
 - name: Include OS variables
@@ -26,20 +26,20 @@
     nomad_node_role: "{{ nomad_node_role }}"
 
 - name: Include user and group settings
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: user_group.yml
 
 - name: Include Docker tasks
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: docker.yml
   when: nomad_docker_enable | bool
 
 - name: Install OS packages
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: install.yml
 
 - name: Disable SELinux (RHEL)
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: selinux.yml
   when: ansible_os_family == "RedHat"
 
@@ -55,12 +55,12 @@
     - "{{ nomad_plugin_dir }}"
 
 - name: Install Podman plugin
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: install_podman.yml
   when: nomad_podman_enable | bool
 
 - name: Install CNI plugin
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: cni.yml
   when: nomad_cni_enable | bool
 
@@ -83,7 +83,7 @@
     - Restart nomad
 
 - name: Get Gossip Key
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: get_gossip_key.yml
   when:
     - _nomad_node_server | bool
@@ -91,7 +91,7 @@
     - nomad_encrypt is not defined
 
 - name: Create TLS configuration
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: tls.yml
   when: nomad_tls_enable | bool
 
@@ -162,7 +162,7 @@
     - Restart nomad
 
 - name: Host volume
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: host_volume.yml
 
 - name: SYSV init script
